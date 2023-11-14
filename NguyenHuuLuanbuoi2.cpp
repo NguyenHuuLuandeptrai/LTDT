@@ -1,16 +1,15 @@
 #include<stdio.h>
-#include<malloc.h>
 #include<stdlib.h>
-bool CheckDoiXung(int a[10][10], int m);
-bool CheckDonVoHuong(int a[10][10], int m);
-bool CheckGiaDoThi(int a[10][10], int m);
-bool CheckDonCoHuong(int a[10][10], int m);
+#include<conio.h>
+void BacVoHuong(int a[10][10], int m);
+void BacCoHuong(int a[10][10], int m);
+bool KtrDoThi(int a[10][10], int m);
 int main(){
 	FILE *fp;
-	int m,a[10][10];
+	int m, a[10][10];
 	fp = fopen("C:\\Test.txt","r");
-	if(fp==NULL){
-		printf("Khong tim thay tap tin");
+	if(fp == NULL){
+		printf("\nKhong tim thay tap tin!");
 		exit(0);
 	}
 	else{
@@ -22,114 +21,71 @@ int main(){
 		}
 	}
 	fclose(fp);
-	
 	for(int i=1 ; i<=m ; i++){
 			for(int j=1 ; j<=m ; j++){
 				printf(" %d ",a[i][j]);
 			}
 			printf("\n");
 	}
-	//Kiem tra 
-	if(CheckDoiXung(a,m) == true){
-		printf("\nDo thi doi xung qua duong cheo chinh!");
-		if(CheckDonVoHuong(a,m) == true && CheckGiaDoThi(a,m) == false){
-			printf("\n->Don do thi vo huong!");
-		}
-	    if(CheckGiaDoThi(a,m) == true && CheckDonVoHuong(a,m) == false){
-			printf("\n->Gia do thi!");
-		}
-		if(CheckDonVoHuong(a,m) == false && CheckGiaDoThi(a,m) == false) {
-			printf("\n->Da do thi vo huong!");
-		}
-		
+	if(KtrDoThi(a,m)==true){
+		printf("\nDay la do thi vo huong!");
+		printf("\nAn phim bat ki de tinh tong bac dinh nhap tu ban phim!");
+		getch();
+		BacVoHuong(a,m);
 	}
 	else{
-		printf("\nDo thi khong doi xung qua duong cheo chinh!");
-		if(CheckDonCoHuong(a,m) == true){
-			printf("->Don do thi co huong!");
+		printf("\nDay la do thi co huong!");
+		printf("\nAn phim bat ki de tinh tong bac dinh nhap tu ban phim!");
+		getch();
+		BacCoHuong(a,m);
+	}
+	
+}
+void BacVoHuong(int a[10][10], int m){
+	int x = 0, bac = 0;
+	printf("\nNhap dinh can tinh bac: ");
+	scanf("%d",&x);
+		for(int j=1 ; j<=m ; j++){
+			//Tinh bac khuyen
+			if(x==j && a[x][j]!=0){
+				bac = (a[x][j]*2);
+			}
 		}
-		else{
-			printf("->Da do thi co huong!");
+		for(int j=1 ; j<=m ; j++){
+			if(x!=j && a[x][j] != 0 ){
+				bac +=a[x][j];
+			}
+		}
+	printf("\nBac cua dinh %d = %d",x,bac);
+}
+
+void BacCoHuong(int a[10][10], int m){
+	int x = 0, degin = 0, degout = 0;
+	printf("\nNhap vao dinh can tinh bac: ");
+	scanf("%d",&x);
+	//tinh bac vao: 
+	for(int i=1 ; i<=m ; i++){
+		if(a[i][x] != 0){
+			degin += a[i][x];
 		}
 	}
+	//tinh bac ra: 
+	for(int j=1 ; j<=m ; j++){
+		if(a[x][j] != 0){
+			degout += a[x][j];
+		}
+	}
+	//Xuat ra ket qua sau khi tinh
+	printf("\nTong bac vao cua dinh %d la: %d",x,degin);
+	printf("\nTong bac ra cua dinh %d la: %d",x,degout);
 }
-bool CheckDoiXung(int a[10][10], int m){
-	//bool check = true;
-	for(int i=1; i<=m ; i++){
+bool KtrDoThi(int a[10][10], int m){
+	for(int i=1 ; i<=m ; i++){
 		for(int j=1 ; j<=m ; j++){
 			if(a[i][j] != a[j][i]){
 				return false;
 			}
-		}    
+		}
 	}
 	return true;
 }
-
-bool CheckDonVoHuong(int a[10][10], int m){
-	bool check = true;
-	for(int i = 1 ; i<=m ; i++){
-		for(int j=1 ; j<=m ; j++){
-			if(a[i][j] > 1){
-				check = false;
-			}
-			if(i==j){
-				if(a[i][j] != 0){
-					check = false;
-				}
-			}
-		}
-	}
-	return check;
-}
-bool CheckGiaDoThi(int a[10][10], int m){
-	bool check = false;
-	for(int i=1 ; i<=m ; i++){
-		for(int j=1; j<=m ; j++){
-			if(i==j){
-				if(a[i][j] != 0){
-					check = true;
-				}
-			}
-		}
-   }
-   return check;
-}
-
-bool CheckDonCoHuong(int a[10][10], int m){
-	bool check = false;
-	bool check2 = true;
-	bool check3 = true;
-	for(int i=1 ; i<=m ; i++){
-		for(int j=1; j<=m ; j++){
-			if(a[i][j] != a[j][i]){
-				check = true;
-			}
-		}
-    }
-   
-    for(int i=1 ; i<=m ; i++){
-		for(int j=1; j<=m ; j++){
-			if(a[i][j] > 1){
-				check2 = false;
-			}
-		}
-    }
-    
-    for(int i=1 ; i<=m ; i++){
-		for(int j=1; j<=m ; j++){
-			if(i == j){
-				if(a[i][j] != 0){
-					check3 = false;
-				}
-			}
-		}
-    }
-   if(check == true && check2 == true && check3 == true){
-   		return true;
-   }
-   return false;
-}
-
-
-
-
